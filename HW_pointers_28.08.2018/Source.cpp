@@ -35,51 +35,86 @@ void func2(int *a, int n) {
 }
 
 // 3.	Написать следующие функции для работы с динамическим массивом:
+// case 3
 
 // a.функция распределения динамической памяти
-
+void allocation(int *&a, int n) {
+	a = new int[n];
+}
 
 // b.функция инициализации динамического массива
-// case 4
 void init(int *a, int n) {
-	a = new int[n];
-
-	/*delete[] a;*/
+	
+	for (int i = 0; i < n; i++)
+		cin >> a[i];
 }
 
 // c.функция печати динамического массива
-// case 5
 void print(int *a, int n) {
-	a = new int[n];
-	
-	for (int i = 0; i < n; i++)
-	{
-		a[i] = rand() % 21;
-		cout << a[i] << " ";
-	}
-	cout << endl;
 
-	delete[] a;
+	for (int i = 0; i < n; i++)
+		cout << a[i] << " ";
+	cout << endl;
 }
 
 // d.функцию удаления динамического массива
-void delete_arr(int *a) {
+void delete_arr(int *&a) {
 	delete[]a;
 }
 
 // e.функцию добавления элемента в конец массива
+void insert_end(int *&a, int &n, int value) {
+	int *tmp = new int[n + 1];
+	for (int i = 0; i < n; i++)
+		tmp[i] = a[i];
+
+	tmp[n] = value;
+	n += 1;
+	delete[] a;
+	a = tmp;
+}
 
 
 // f.функцию вставки элемента по указанному индексу
-
+// case 6
+void add_index(int *&a, int &n, int index) {
+	int *tmp = new int[n + 1];
+	for (int i = 0; i <= index; i++)
+	{
+		tmp[i] = a[i];
+		if (i == index)
+		{
+			cout << "ввести значение элемента по индексу: ";
+			cin >> tmp[i];
+		}	
+	}
+	for (int i = index + 1; i < n + 1; i++)
+		tmp[i] = a[i-1];
+	
+	n += 1;
+	delete[] a;
+	a = tmp;
+}
 
 // g.функцию удаления элемента по указанному индексу
+// case 6
+void del_index(int *&a, int &n, int index) {
+	int *tmp = new int[n - 1];
+	for (int i = 0; i < index; i++)
+	{
+		tmp[i] = a[i];
+	}
+	for (int i = index; i < n; i++)
+		tmp[i] = a[i + 1];
 
-
+	n -= 1;
+	delete[] a;
+	a = tmp;
+}
 
 // 4.	Написать функцию, которая получает указатель на динамический массив и его размер.
 // Функция должна удалить из массива все отрицательные числа и вернуть указатель на новый динамический массив.
-
+// case 4
 void erase_neg(int *&a, int &n) {
 	int *tmp;
 	int k = 0;
@@ -99,6 +134,26 @@ void erase_neg(int *&a, int &n) {
 	a = tmp;
 	n = k;
 }
+
+// 5.	Даны два массива : А[N] и B[M](M и  N вводятся с клавиатуры).
+// Необходимо создать третий массив минимально возможного размера,
+// в котором нужно собрать элементы обоих массивов.
+// case 5
+void unit(int *a, int *b, int n, int m) {
+	int *c = new int[n + m];
+	for (int i = 0; i < n; i++)
+			c[i] = a[i];
+
+	for (int i = 0; i < m; i++)
+			c[i+n] = b[i];
+
+	for (int i = 0; i < n + m; i++)
+		cout << c[i] << " ";
+	cout << endl << endl;
+
+	delete[] c;
+}
+
 
 int main()
 {
@@ -120,7 +175,7 @@ int main()
 			int n = 5;
 			int *a;
 			a = new int[n];
-			int p=0, p1=1;
+			int p = 0, p1 = 1;
 			for (int i = 0; i < n; i++)
 			{
 				a[i] = rand() % 10 - 3;
@@ -155,54 +210,21 @@ int main()
 		break;
 		case 3:
 		{
-			
-		}
-		break;
-		case 4:
-		{
+			int *a;
 			int n = 5;
-			int a;
-			int *p = &a;
+			allocation(a, n);
+			init(a, n);
+			print(a, n);
 
-			init(p, n);
+			insert_end(a, n, 10);
+			print(a, n);
 
-			for (int i = 0; i < n; i++)
-			{
-				p[i] = rand() % 21;
-				cout << p[i] << " ";
-			}
+			delete_arr(a);
+
 			cout << endl;
 		}
 		break;
-		case 5:
-		{
-			int n = 5;
-			int *p=&n;
-
-			print(p, n);
-		}
-		break;
-		case 6:
-		{
-
-		}
-		break;
-		case 7:
-		{
-
-		}
-		break;
-		case 8:
-		{
-
-		}
-		break;
-		case 9:
-		{
-
-		}
-		break;
-		case 10:
+		case 4:
 		{
 			int *a;
 			int n = 10;
@@ -221,69 +243,58 @@ int main()
 			{
 				cout << a[i] << " ";
 			}
-			cout << endl;
+			cout << endl << endl;
 			delete[] a;
 		}
 		break;
-		case 12:
+		case 5:
 		{
-			// 5.	Даны два массива : А[N] и B[M](M и  N вводятся с клавиатуры).
-			// Необходимо создать третий массив минимально возможного размера,
-			// в котором нужно собрать элементы обоих массивов.
-
 			int *a, *b;
 			int n, m;
 			cin >> n >> m;
-
 			a = new int[n];
 			b = new int[m];
 
-			/*if (m > n) swap(*a, *b);*/
-
 			for (int i = 0; i < n; i++)
 			{
-				a[i] = rand() % 21;
+				a[i] = rand() % 10;
 				cout << a[i] << " ";
 			}
 			cout << endl;
 			for (int i = 0; i < m; i++)
 			{
-				b[i] = rand() % 21;
+				b[i] = rand() % 10;
 				cout << b[i] << " ";
 			}
-			cout << endl;
+			cout << endl << endl;
 
-			int k = 0, c=0;
-			for (int i = 0; i < m; i++)
+			unit(a, b, n, m);
+		}
+		break;
+		case 6:
+		{
+			int n = 10;
+			int *a;
+			a = new int[n];
+			
+			for (int i = 0; i < n; i++)
 			{
-				for (int j = 0; j < n; j++)
-				{
-					if (b[i] == a[j])
-						k++;
-				}
+				a[i] = rand() % 10;
+				cout << setw(4) << a[i] << " ";
 			}
-			k = n - k;
-			int *tmp = new int[k];
+			cout << endl << endl;
 
-			for (int i = 0; i < m; i++)
-			{
-				for (int j = 0; j < n; j++)
-				{
-					if (b[i] == a[j]) break;
+			add_index(a, n, 5);
+			for (int i = 0; i < n; i++)
+				cout << setw(4) << a[i] << " ";
+			cout << endl << endl;
 
-					tmp[c] = a[i];
-					tmp[c + 1] = b[i];
-					c++;
-				}
-			}
-
-			for (int i = 0; i < k; i++)
-				cout << tmp[i] << " ";
+			del_index(a, n, 7);
+			for (int i = 0; i < n; i++)
+				cout << setw(4) << a[i] << " ";
 			cout << endl << endl;
 
 			delete[] a;
-			delete[] b;
-			delete[] tmp;
 		}
 		break;
 		default:
